@@ -1,5 +1,5 @@
 let w = 0, h = 0;
-const opp = 240, adj = 416, hyp = 480, bitSize = 50;
+const opp = 240/5, adj = 416/5, hyp = 480/5, bitSize = 50/5;
 
 function fixSize() {
     w = window.innerWidth;
