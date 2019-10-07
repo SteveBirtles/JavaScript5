@@ -1,6 +1,5 @@
 let w = 0, h = 0;
-const opp = 240, adj = 416, hyp = 480;
-const source = new Image();
+const image = new Image();
 
 function fixSize() {
     w = window.innerWidth;
@@ -15,56 +14,77 @@ function pageLoad() {
     window.addEventListener("resize", fixSize);
     fixSize();
 
-    source.src = 'source3.jpg';
-    source.onload = () => window.requestAnimationFrame(redraw);
+    image.src = 'sourceImage.jpg';
+    image.onload = () => window.requestAnimationFrame(redraw);
 
 }
 
-let lastTimestamp = 0;
-let a = 0;
+const opp = 240, adj = 416, hyp = 480;
 
 const triangleCanvas = new OffscreenCanvas(opp, adj);
 const hexagonCanvas = new OffscreenCanvas(2*hyp, 2*adj);
+
+let lastTimestamp = 0;
+let angle = 0;
 
 function redraw(timestamp) {
 
     if (lastTimestamp === 0) lastTimestamp = timestamp;
     const frameLength = (timestamp - lastTimestamp) / 1000;
     lastTimestamp = timestamp;
-    a += frameLength/2;
+    angle += frameLength/2;
 
-    const triCtx = triangleCanvas.getContext('2d');
-    triCtx.clearRect(0,0,opp,adj);
+    renderTriangle();
+    renderHexagon();
+    renderKaleidoscope();
 
-    triCtx.fillStyle = 'white';
-    triCtx.globalCompositeOperation="source-over";
+    window.requestAnimationFrame(redraw);
 
-    triCtx.beginPath();
-    triCtx.moveTo(0, 0);
-    triCtx.lineTo(0, adj);
-    triCtx.lineTo(opp, adj);
-    triCtx.lineTo(0, 0);
-    triCtx.fill();
+}
 
-    triCtx.globalCompositeOperation="source-in";
-    triCtx.save();
-    triCtx.translate(opp/2, adj/2)
-    triCtx.rotate(a);
-    triCtx.drawImage(source, -source.width/2, -source.height/2);
-    triCtx.restore();
+function renderTriangle() {
 
-    const hexCtx = hexagonCanvas.getContext('2d');
+    const context = triangleCanvas.getContext('2d');
 
-    hexCtx.save();
-    hexCtx.translate(hyp,adj);
+    context.clearRect(0,0,opp,adj);
+
+    context.fillStyle = 'white';
+    context.globalCompositeOperation="source-over";
+
+    context.beginPath();
+    context.moveTo(0, 0);
+    context.lineTo(0, adj);
+    context.lineTo(opp, adj);
+    context.lineTo(0, 0);
+    context.fill();
+
+    context.globalCompositeOperation="source-in";
+    context.save();
+    context.translate(opp/2, adj/2)
+    context.rotate(angle);
+    context.drawImage(image, -image.width/2, -image.height/2);
+    context.restore();
+
+}
+
+function renderHexagon() {
+
+    const context = hexagonCanvas.getContext('2d');
+
+    context.save();
+    context.translate(hyp,adj);
     for (let j = 0; j < 6; j ++) {
-        hexCtx.rotate(Math.PI/3);
-        hexCtx.drawImage(triangleCanvas,0,0);
-        hexCtx.scale(-1,1);
-        hexCtx.drawImage(triangleCanvas,0,0);
-        hexCtx.scale(-1,1);
+        context.rotate(Math.PI/3);
+        context.drawImage(triangleCanvas,0,0);
+        context.scale(-1,1);
+        context.drawImage(triangleCanvas,0,0);
+        context.scale(-1,1);
     }
-    hexCtx.restore();
+    context.restore();
+
+}
+
+function renderKaleidoscope() {
 
     const canvas = document.getElementById('kaleidoscopeCanvas');
     const context = canvas.getContext('2d');
@@ -81,7 +101,5 @@ function redraw(timestamp) {
         context.drawImage(hexagonCanvas, 2*adj*Math.sin(i*Math.PI/3),2*adj*Math.cos(i*Math.PI/3));
     }
     context.restore();
-
-    window.requestAnimationFrame(redraw);
 
 }
