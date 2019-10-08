@@ -35,7 +35,19 @@ function redraw(timestamp) {
     angle += frameLength/2;
 
     renderTriangle();
+
+    //TEST CODE FOR TRIANGLE
+    /*const canvas = document.getElementById('kaleidoscopeCanvas');
+    const context = canvas.getContext('2d');
+    context.drawImage(triangleCanvas, 0,0);*/
+
     renderHexagon();
+
+    //TEST CODE FOR HEXAGON
+    /*const canvas = document.getElementById('kaleidoscopeCanvas');
+    const context = canvas.getContext('2d');
+    context.drawImage(hexagonCanvas, 0,0);*/
+
     renderKaleidoscope();
 
     window.requestAnimationFrame(redraw);
