@@ -19,7 +19,7 @@ function pageLoad() {
 
 }
 
-const opp = 240/4, adj = 416/4, hyp = 480/4;
+const opp = 240/5, adj = 416/5, hyp = 480/5;
 
 const triangleCanvas = new OffscreenCanvas(opp, adj);
 const hexagonCanvas = new OffscreenCanvas(2*hyp, 2*adj);
