@@ -89,6 +89,9 @@ function renderKaleidoscope() {
     const canvas = document.getElementById('kaleidoscopeCanvas');
     const context = canvas.getContext('2d');
 
+    context.fillStyle = 'black';
+    context.fillRect(0,0,w,h);
+
     context.save();
     context.translate(w/2-hyp, h/2-adj);
 
@@ -97,8 +100,7 @@ function renderKaleidoscope() {
 
     context.globalAlpha = 0.5;
     for (let i = 0; i < 6; i++) {
-        context.drawImage(hexagonCanvas, -2*adj,-2*adj);
-        context.rotate(Math.PI/3);
+        context.drawImage(hexagonCanvas, 2*adj*Math.sin(i*Math.PI/3), 2*adj*Math.cos(i*Math.PI/3));
     }
 
     context.restore();
