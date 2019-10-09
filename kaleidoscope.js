@@ -35,19 +35,7 @@ function redraw(timestamp) {
     angle += frameLength/2;
 
     renderTriangle();
-
-    //TEST CODE FOR TRIANGLE
-    /*const canvas = document.getElementById('kaleidoscopeCanvas');
-    const context = canvas.getContext('2d');
-    context.drawImage(triangleCanvas, 0,0);*/
-
     renderHexagon();
-
-    //TEST CODE FOR HEXAGON
-    /*const canvas = document.getElementById('kaleidoscopeCanvas');
-    const context = canvas.getContext('2d');
-    context.drawImage(hexagonCanvas, 0,0);*/
-
     renderKaleidoscope();
 
     window.requestAnimationFrame(redraw);
@@ -101,17 +89,18 @@ function renderKaleidoscope() {
     const canvas = document.getElementById('kaleidoscopeCanvas');
     const context = canvas.getContext('2d');
 
-    context.fillStyle = 'black';
-    context.fillRect(0,0,w,h);
-
     context.save();
     context.translate(w/2-hyp, h/2-adj);
+
     context.globalAlpha = 1;
     context.drawImage(hexagonCanvas, 0,0);
+
     context.globalAlpha = 0.5;
     for (let i = 0; i < 6; i++) {
-        context.drawImage(hexagonCanvas, 2*adj*Math.sin(i*Math.PI/3),2*adj*Math.cos(i*Math.PI/3));
+        context.drawImage(hexagonCanvas, -2*adj,-2*adj);
+        context.rotate(Math.PI/3);
     }
+
     context.restore();
 
 }
